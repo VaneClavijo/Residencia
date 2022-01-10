@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{%import "bootstrap/wtf.html" as wtf%}
+{% block content %}
+<form class="card-body" action="/login" method="POST">
+    {%with messages=get_flashed_messages()%}
+{%if messages %}
+<ul>
+	{%for message in messages%}
+	{%if message=='Usuario o Contraseña Incorrecto' %}
+	<div class="alert alert-danger alert-dismissible fade show">
+		<li>{{message}}</li>
+	</div>
+	{%endif%}
+	{%endfor%}
+</ul>
+{%endif%}
+{%endwith%}
+
+{%if not session['id']%}
+    <div class="card mx-auto align-content-sm-center">
+
+        <div class="card-body">
+            <div class="card text-center">
+                <nav style="background:midnightblue">
+                <h1 class="card-title-center text-white">LOGIN</h1>
+                </nav>
+            </div>
+            <br>
+            <form method="POST" action="/login">
+                <div class="col-md-7 mx-auto justify-content-center">
+                    <div class="field">
+                        <div class="row justify-content-center">
+                            <h4>CEDULA DE IDENTIDAD</h4>
+                        </div>
+
+                        <div class="row justify-content-center">
+                                <div>
+                                    <div class="input-group-lg">
+                                        <input type="text" class="form-control" pattern="[0-9]{10}" name="login_ci" id="login_ci" required maxlength="10">
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+
+                    <div class="field">
+                        <div class="row justify-content-center">
+                            <h4>CONTRASEÑA</h4>
+                        </div>
+                        <div class="row justify-content-center">
+                                <div class="col">{{wtf.form_field(form.password)}}</div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="col-lg-1 mx-auto"><button class="btn btn-primary">Login</button></div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+</div>
+{%else%}
+	<div class="card">
+		<div class="card-body">
+			<div class="card text-center">
+				<nav style="background:midnightblue">
+					<h1 class="card-title-center text-white">Ya Hay Una Sesion Abierta</h1>
+				</nav>
+			</div>
+			<br>
+		</div>
+	</div>
+	{% endif %}
+</form>
+{% endblock %}

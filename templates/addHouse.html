@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block content %}
+
+{%if session['id']%}
+	{% if session['type'] in ['O','L','A']%}
+	{%with messages=get_flashed_messages()%}
+	{%if messages %}
+	<ul>
+		{%for message in messages%}
+		{%if message=='Registro Duplicado sin guardar' %}
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<li>{{message}}</li>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		{%else%}
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<li>{{message}}</li>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		{%endif%}
+		{%endfor%}
+	</ul>
+	{%endif%}
+	{%endwith%}
+	<form class="card-body" action="{{ url_for('add_house') }}" method="POST">
+
+			<div class="card">
+					<div class="card-body">
+						<div class="card text-center">
+							<nav style="background:midnightblue">
+								<h1 class="card-title-center text-white">Agregar Casa</h1>
+							</nav>
+						</div>
+						<br>
+						<div class="card text-center">
+
+
+
+
+							<div>
+								<div class="row justify-content-center">
+									<div class="col-sm-2 justify-content-end">
+										<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="midnightblue" class="bi bi-house-door" viewBox="0 0 16 16">
+											<path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+										</svg>
+									</div>
+									<div class="col-sm-3 justify-content-start">
+										<input type="number" class="form-control"  name="house_id" placeholder="Numero de Casa" id="house_id" required>
+									</div>
+								</div>
+							</div>
+							<br>
+
+							<div>
+								<div class="row justify-content-center">
+									<div class="col-sm-2 justify-content-end">
+
+										<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="midnightblue" class="bi bi-body-text" viewBox="0 0 16 16">
+											<path fill-rule="evenodd" d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5Zm0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Zm-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5Zm8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Z"/>
+										</svg>
+									</div>
+									<div class="col-sm-3 justify-content-start">
+										<div class="input-group-lg">
+											<input class="form-control" name="house_description" placeholder="Comentarios o referencias" id="floatingTextarea2" style="height: 100px">
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<br>
+						</div>
+					</div>
+					<div class="card text-center border-white">
+						<div class=" mx-auto ">
+							<button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+								GUARDAR
+							</button>
+						</div>
+					</div>
+					<div class="row justify-content-between border-white">
+						<div class="col-sm-1 border-white">
+							<div class="card text-center bg-transparent border-white">
+								<a class="btn btn-outline-light" type="button" href="{{ url_for('house_report') }}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="midnightblue" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+										<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+									</svg>
+								</a>
+							</div>
+						</div>
+						<div class="col-sm-1 border-white">
+							<div class="card text-center bg-transparent border-white">
+								<a class="btn btn-outline-light" type="button" href="{{ url_for('admin_profile') }}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="midnightblue" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+										<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/>
+									</svg>
+								</a>
+							</div>
+						</div>
+					</div>
+			</div>
+		</form>
+
+		<br>
+	{%else%}
+	<div class="card">
+		<div class="card-body">
+			<div class="card text-center">
+				<nav style="background:midnightblue">
+					<h1 class="card-title-center text-white">No tiene acceso a esta pagina</h1>
+				</nav>
+			</div>
+			<br>
+		</div>
+	</div>
+	{% endif %}
+{%else%}
+<div class="card">
+	<div class="card-body">
+		<div class="card text-center">
+			<nav style="background:midnightblue">
+				<h1 class="card-title-center text-white">No tiene acceso a esta pagina, debe iniciar sesion</h1>
+			</nav>
+		</div>
+		<br>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

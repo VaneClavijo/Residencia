@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form class="card-body" action="{{ url_for('admin_profile') }}" method="GET">
+
+	{%if session['id']%}
+		{% if session['type']=='O' %}
+		<div class="card">
+			<div class="card-body">
+				<div class="card text-center">
+					<nav style="background:midnightblue">
+						<h1><a class="navbar-brand text-white" href="#">PERFIL DE PROPIETARIO</a></h1>
+					</nav>
+				</div>
+				<br>
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('lesse_report') }}">HISTORAL ARRENDATARIOS</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('visits_report') }}">VER HISTORIAL DE VISITAS</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+			</div>
+		</div>
+		{%elif session['type']=='G' %}
+		<div class="card">
+			<div class="card-body">
+				<div class="card text-center">
+					<nav style="background:midnightblue">
+						<h1><a class="navbar-brand text-white" href="#">PERFIL DE GUARDIA</a></h1>
+					</nav>
+				</div>
+				<br>
+				<br>
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('add_visit') }}">AGREGAR VISITA</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('add_exit_time') }}">REGISTRAR SALIDA</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+			</div>
+		</div>
+		{%elif session['type']=='L' %}
+		<div class="card">
+			<div class="card-body">
+				<div class="card text-center">
+					<nav style="background:midnightblue">
+						<h1><a class="navbar-brand text-white" href="#">PERFIL DE ARRENDATARIO</a></h1>
+					</nav>
+				</div>
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('visits_report') }}">VER HISTORIAL DE VISITAS</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+			</div>
+		</div>
+		{%elif session['type']=='A' %}
+		<div class="card">
+			<div class="card-body">
+				<div class="card text-center">
+					<nav style="background:midnightblue">
+						<h1><a class="navbar-brand text-white" href="#">PERFIL DE ADMINISTRADOR</a></h1>
+					</nav>
+				</div>
+
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('house_report') }}">CASAS</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('owner_report') }}">PROPIETARIOS</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('guard_report') }}">GUARDIAS</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('schedule_report') }}">HORARIOS DE GUARDIAS</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+
+				<div class="card text-center">
+					<div class="row justify-content-center">
+						<div class="col-sm-5 justify-content-start">
+							<div class="d-grid gap-2 col-6 mx-auto">
+								<a class="btn btn-primary " type="button" href="{{ url_for('visits_report') }}">VISITAS</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+
+			</div>
+		</div>
+		{% endif %}
+		{%else%}
+		<div class="card">
+			<div class="card-body">
+				<div class="card text-center">
+					<nav style="background:midnightblue">
+						<h1 class="card-title-center text-white">No tiene acceso a esta pagina, debe iniciar sesion</h1>
+					</nav>
+				</div>
+				<br>
+			</div>
+		</div>
+		{% endif %}
+</form>
+{% endblock %}
+
+
+

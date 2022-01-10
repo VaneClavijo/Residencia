@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block content %}
+
+{%if session['id']%}
+
+{% if session['type'] in ['O','L','A','G']%}
+{%with messages=get_flashed_messages()%}
+	{%if messages %}
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<ul>
+			{%for message in messages%}
+			{%if message=='Registro Duplicado sin guardar' %}
+			<div class="alert alert-danger alert-dismissible fade show">
+				<li>{{message}}</li>
+			</div>
+			{%elif message=='No se guardó. La hora de entrada no puede ser mayor que la de salida'%}
+			<div class="alert alert-warning alert-dismissible fade show">
+				<li>{{message}}</li>
+			</div>
+			{%else%}
+			<div class="alert alert-success alert-dismissible fade show">
+				<li>{{message}}</li>
+			</div>
+			{%endif%}
+			{%endfor%}
+		</ul>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	  </div>
+	{%endif%}
+	{%endwith%}
+<form class="card-body" action="{{ url_for('add_schedule') }}" method="POST">
+
+		<div class="card">
+			<div class="card-body">
+				<div class="card text-center">
+					<nav style="background:midnightblue">
+						<h1 class="card-title-center text-white">Registrar Turno de Guardia</h1>
+					</nav>
+				</div>
+				<br>
+				<div class="card text-center">
+
+
+					<div>
+						<div class="row justify-content-center">
+							<div class="col-sm-2 justify-content-end">
+
+								<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="midnightblue" class="bi bi-card-heading" viewBox="0 0 16 16">
+									<path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+									<path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z"/>
+								</svg>
+							</div>
+							<div class="col-sm-3 justify-content-start">
+								<select class="form-select" name="guard_ci">
+									<option selected>Escoja el Guardia para el turno</option>
+									{% for n in guardsS.keys()%}
+									<option value={{n}}>{{guardsS[n]}}</option>
+									{% endfor %}
+								</select>
+
+							</div>
+						</div>
+					</div>
+					<br>
+					<div>
+						<div class="row justify-content-center">
+							<div class="col-sm-2 justify-content-end">
+
+								<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="midnightblue" class="bi bi-tags-fill" viewBox="0 0 16 16">
+									<path d="M2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2zm3.5 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+									<path d="M1.293 7.793A1 1 0 0 1 1 7.086V2a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l.043-.043-7.457-7.457z"/>
+									</svg>
+							</div>
+							<div class="col-sm-3 justify-content-start">
+								<select class="form-select" name="local">
+									<option selected>Escoja el Lugar</option>
+									{% for n in locations%}
+									<option value={{n[0]}}>{{n[1]}}</option>
+									{% endfor %}
+								</select>
+
+							</div>
+						</div>
+					</div>
+					<br>
+
+
+					<div>
+						<div class="row justify-content-center">
+							<div class="col-sm-2 justify-content-end">
+
+								<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="midnightblue" class="bi bi-clock-fill" viewBox="0 0 16 16">
+									<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+									</svg>
+							</div>
+							<div class="col-sm-3 justify-content-start">
+								<div class="input-group-lg">
+									<label>Horario de entrada</label>
+									<input type="datetime-local" class="form-control" name="entry_time" placeholder="Hora de Ingreso" id="entry_time" required>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<br>
+
+					<div>
+						<div class="row justify-content-center">
+							<div class="col-sm-2 justify-content-end">
+
+								<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="midnightblue" class="bi bi-clock-fill" viewBox="0 0 16 16">
+									<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+									</svg>
+							</div>
+							<div class="col-sm-3 justify-content-start">
+								<div class="input-group-lg">
+									<label>Horario de Salida</label>
+									<input type="datetime-local" class="form-control" name="out_time" placeholder="Hora de Salida" id="out_time" required>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<br>
+				</div>
+			</div>
+				<div class="card text-center border-white">
+					<div class=" mx-auto ">
+						<button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+							GUARDAR
+						</button>
+					</div>
+				</div>
+				<div class="row justify-content-between border-white">
+					<div class="col-sm-1 border-white">
+						<div class="card text-center bg-transparent border-white">
+							<a class="btn btn-outline-light" type="button" href="{{ url_for('schedule_report') }}">
+								<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="midnightblue" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+									<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+								</svg>
+							</a>
+						</div>
+					</div>
+					<div class="col-sm-1 border-white">
+						<div class="card text-center bg-transparent border-white">
+							<a class="btn btn-outline-light" type="button" href="{{ url_for('admin_profile') }}">
+								<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="midnightblue" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+									<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/>
+								</svg>
+							</a>
+						</div>
+					</div>
+				</div>
+		</div>
+	</form>
+
+	{%else%}
+	<div class="card">
+		<div class="card-body">
+			<div class="card text-center">
+				<nav style="background:midnightblue">
+					<h1 class="card-title-center text-white">No tiene acceso a esta pagina</h1>
+				</nav>
+			</div>
+			<br>
+		</div>
+	</div>
+	{% endif %}
+{%else%}
+<div class="card">
+	<div class="card-body">
+		<div class="card text-center">
+			<nav style="background:midnightblue">
+				<h1 class="card-title-center text-white">No tiene acceso a esta pagina, debe iniciar sesion</h1>
+			</nav>
+		</div>
+		<br>
+	</div>
+</div>
+{% endif %}
+
+{% endblock %}

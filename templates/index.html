@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<form class="card-body" style="border: color(midnightblue), width(10px)" action="index" method="GET">
+	<div class="jumbotron bg-cover" style="background-image: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%,rgba(255,255,255,0.9) 100%), url(https://img10.naventcdn.com/avisos/9/00/52/28/74/30/1200x1200/90193574.jpg)">
+		<hr>
+		<br>
+		<div class="container align-content-center ">
+			<h1 class="display-1 text-center">Bienvenidos al Sistema de Gestion del Conjunto Residencial</h1>
+			<br>
+			<h3 class="text-center">Para iniciar debes Ingresar a tu Cuenta</h3>
+			<br>
+		<img class="img-fluid rounded mx-auto my-auto d-block p-3 bg-body rounded" width="300"
+                        src="static/images/qrcode.png" alt="qrcode">
+		<div class="label mx-auto my-auto ">
+			<br>
+		<h4 class="text-center">Scanea este código Qr para conocer nuestras políticas</h4>
+		<br>
+		</div>
+		<div class="card text-center bg-transparent">
+			<a class="btn btn-outline-light" type="button" href="{{ url_for('admin_profile') }}">
+				<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="midnightblue" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+					<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/>
+				</svg>
+			</a>
+		</div>
+</div>
+{% endblock %}

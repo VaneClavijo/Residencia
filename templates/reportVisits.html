@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+	<title>DataTables example - HTML (DOM) sourced data</title>
+	<link rel="shortcut icon" type="image/png" href="/media/images/favicon.png">
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml">
+	<link rel="stylesheet" type="text/css" href="/media/css/site-examples.css?_=94461d89946ef749b7a43d14685c725d1">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href=" https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+
+	<style type="text/css" class="init">
+
+	</style>
+	<script type="text/javascript" src="/media/js/site.js?_=0c32e5cdbe9b575086edb0b907646184"></script>
+	<script type="text/javascript" src="/media/js/dynamic.php?comments-page=examples%2Fdata_sources%2Fdom.html" async></script>
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript" language="javascript" src="../resources/demo.js"></script>
+	<script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+    var table = $('#example').DataTable( {
+        "scrollX": true,
+
+    } );
+
+    new $.fn.dataTable.FixedHeader( table );
+} );
+$(document).ready(function() {
+    var table = $('#example1').DataTable( {
+        "scrollX": true,
+
+    } );
+
+    new $.fn.dataTable.FixedHeader( table );
+} );
+
+	</script>
+</head>
+{%if session['id']%}
+{% if session['type'] in ['O','L','A','G']%}
+<form class="card-body" action="{{ url_for('visits_report') }}" method="POST">
+    <div class="shadow p-3 mb-5 bg-black text-center-white rounded">
+        <h1 class="text-center" style="background-color: midnightblue; color: white;"> REPORTE DE VISITAS</h1>
+        <br>
+        {% if session['type'] in ['G','A']%}
+        <div class="card text-lg-center">
+            <div class="row justify-content-center">
+                <div class="col-sm-5 justify-content-start">
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <a class="btn btn-primary " type="button" href="{{ url_for('add_visit') }}">AGREGAR VISITA</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <br>
+    </div>
+</form>
+
+<div class="shadow p-3 mb-5 bg-white rounded">
+<div class="card-header bi-text-left" style="background-color: #E6E5E4; color: midnightblue;"><h4>VISITAS PENDIENTES</h4></div>
+    <table id="example1" class="table table-hover table-bordered" style="width: 100%;">
+    <thead>
+        <tr class="text-center" style="background-color: #F0F0F0; color: midnightblue;">
+            <th scope="col">#Casa</th>
+            <th scope="col">Visitante</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Placa de Carro</th>
+            <th scope="col">Hora de Entrada</th>
+            <th scope="col">Guardia que Registra</th>
+            {% if session['type'] in ['O','L']%}
+            <th scope="col">Aceptar</th>
+            <th scope="col">Rechazar</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+
+        {% if not busqueda%}
+            <tr>
+                <th scope="row">No hay registro</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                {% if session['type'] in ['O','L']%}
+                <th scope="col"></th>
+                <th scope="col"></th>
+                {% endif %}
+            </tr>
+        {% endif %}
+        {% for b in busqueda%}
+            <tr>
+                <td>{{b[0]}}</td>
+                <td>{{b[1]}},{{b[2]}}</td>
+                <td>{{b[3]}}</td>
+                <td>{{b[4]}}</td>
+                <td>{{b[5]}}</td>
+                <td>{{b[9]}}</td>
+                <input id="idin" name="idin" type="hidden" value={{b[8]}}>
+                            {% if session['type'] in ['O','L']%}
+                            <td>
+                                <form action="{{url_for('accept_visit')}}" method="POST">
+                                    <input type="hidden"  name="visit_id" value="{{b[8]}}">
+                                        <button type="submit" class="btn btn-light mx-auto my-auto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="darkgreen" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+                                            </svg>
+                                        </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{{url_for('reject_visit')}}" method="POST">
+                                    <input type="hidden"  name="visit_id" value="{{b[8]}}">
+                                        <button type="submit" class="btn btn-light mx-auto my-auto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="darkred" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                                            </svg>
+                                        </button>
+                                </form>
+                            </td>
+                            {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+<br>
+
+<div class="shadow p-3 mb-5 bg-white rounded">
+    <div class="card-header bi-text-left" style="background-color: #E6E5E4; color: midnightblue;"><h4>VISITAS GESTIONADAS POR EL HABITANTE</h4></div>
+    <table id="example" class="table table-hover table-bordered" style="width: 100%;">
+          <thead>
+                    <tr class="text-center" style="background-color:  #F0F0F0; color: midnightblue;">
+                        <th scope="col">#Casa</th>
+                        <th scope="col">Cedula Visita</th>
+                        <th scope="col">Nombres</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Placa de Carro</th>
+                        <th scope="col">Hora de Entrada</th>
+                        <th scope="col">Hora de Salida</th>
+                        <th scope="col">Guardia que Registra</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if not busquedaA%}
+                    <tr>
+                        <th scope="row">No hay registro</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                    {% endif %}
+                    {% for b in busquedaA%}
+                        <tr>
+                            <td>{{b[0]}}</td>
+                            <td>{{b[1]}}</td>
+                            <td>{{b[2]}}</td>
+                            <td>{{b[3]}}</td>
+                            <td>{{b[4]}}</td>
+                            <td>{{b[5]}}</td>
+                            <td>{{b[6]}}</td>
+                            <td>{{b[9]}}</td>
+                            <td>{{b[7]}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-sm-1">
+        <div class="card text-center bg-transparent">
+            <a class="btn btn-outline-light" type="button" href="{{ url_for('admin_profile') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="midnightblue" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                    <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+</div>
+{%else%}
+	<div class="card">
+		<div class="card-body">
+			<div class="card text-center">
+				<nav style="background:midnightblue">
+					<h1 class="card-title-center text-white">No tiene acceso a esta pagina</h1>
+				</nav>
+			</div>
+			<br>
+		</div>
+	</div>
+{% endif %}
+{%else%}
+<div class="card">
+	<div class="card-body">
+		<div class="card text-center">
+			<nav style="background:midnightblue">
+				<h1 class="card-title-center text-white">No tiene acceso a esta pagina, debe iniciar sesion</h1>
+			</nav>
+		</div>
+		<br>
+	</div>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+
